@@ -19,6 +19,7 @@ public class Game {
 
   public void play() {
     MessageCli.ASK_HUMAN_INPUT.printMessage();
+    MessageCli.INVALID_HUMAN_INPUT.printMessage();
     MessageCli.START_ROUND.printMessage(roundCounter, numRounds);
     roundCounter++;
   }
