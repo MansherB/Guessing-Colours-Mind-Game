@@ -48,9 +48,13 @@ public class Game {
       int playerCounter = 0;
       int aiCounter = 0;
 
-      if (roundCounter % 3 == 0 && colour2 == aiColours[0]) {
+      if (roundCounter % 3 == 0) {
+        if (colour2 == aiColours[0]) {
+          playerCounter = playerCounter + 2;
+        } else if (aiColours[1] == colour1) {
+          aiCounter = aiCounter + 2;
+        }
         MessageCli.PRINT_POWER_COLOUR.printMessage(Colour.getRandomColourForPowerColour());
-        playerCounter = playerCounter + 2;
       }
       roundCounter++;
       MessageCli.PRINT_INFO_MOVE.printMessage(namePlayer, colour1, colour2);
