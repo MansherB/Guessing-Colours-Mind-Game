@@ -43,19 +43,19 @@ public class Game {
       // Extracts the full colour names from switch input
       Colour colour1 = Colour.fromInput(parts[0]);
       Colour colour2 = Colour.fromInput(parts[1]);
+      Colour[] aiColours = strategy.getAiStrategy();
 
-      if (roundCounter % 3 == 0) {
+      int playerCounter = 0;
+      int aiCounter = 0;
+
+      if (roundCounter % 3 == 0 && colour2 == aiColours[0]) {
         MessageCli.PRINT_POWER_COLOUR.printMessage(Colour.getRandomColourForPowerColour());
+        playerCounter = playerCounter + 2;
       }
       roundCounter++;
       MessageCli.PRINT_INFO_MOVE.printMessage(namePlayer, colour1, colour2);
 
-      Colour[] aiColours = strategy.getAiStrategy();
-
       MessageCli.PRINT_INFO_MOVE.printMessage(AI_NAME, aiColours[0], aiColours[1]);
-
-      int playerCounter = 0;
-      int aiCounter = 0;
 
       if (colour2 == aiColours[0]) {
         playerCounter++;
