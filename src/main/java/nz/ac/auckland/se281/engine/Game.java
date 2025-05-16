@@ -10,6 +10,7 @@ public class Game {
   private int numRounds;
   private int roundCounter;
   private String namePlayer;
+  private Strategies strategy;
 
   public Game() {}
 
@@ -20,6 +21,7 @@ public class Game {
     this.numRounds = numRounds;
     this.namePlayer = namePlayer;
     this.roundCounter = 1;
+    this.strategy = new RandomStrategy();
   }
 
   public void play() {
@@ -41,13 +43,25 @@ public class Game {
       // Extracts the full colour names from switch input
       Colour colour1 = Colour.fromInput(parts[0]);
       Colour colour2 = Colour.fromInput(parts[1]);
+
       if (roundCounter % 3 == 0) {
         MessageCli.PRINT_POWER_COLOUR.printMessage(Colour.getRandomColourForPowerColour());
       }
       roundCounter++;
       MessageCli.PRINT_INFO_MOVE.printMessage(namePlayer, colour1, colour2);
-      MessageCli.PRINT_INFO_MOVE.printMessage(
-          AI_NAME, Colour.getRandomColourForAi(), Colour.getRandomColourForAi());
+
+      Colour[] aiColours = strategy.getAiStrategy();
+
+      MessageCli.PRINT_INFO_MOVE.printMessage(AI_NAME, aiColours[0], aiColours[1]);
+
+      int playerCounter = 0;
+      int aiCounter = 0;
+
+      if (colour2 == aiColours[0]) {
+        playerCounter++;
+      }
+      MessageCli.PRINT_OUTCOME_ROUND.printMessage(namePlayer, playerCounter);
+      MessageCli.PRINT_OUTCOME_ROUND.printMessage(AI_NAME, aiCounter);
       break;
     }
   }
