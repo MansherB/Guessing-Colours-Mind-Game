@@ -60,6 +60,11 @@ public class Game {
       if (colour2 == aiColours[0]) {
         playerCounter++;
       }
+
+      if (aiColours[1] == colour1) {
+        aiCounter++;
+      }
+
       MessageCli.PRINT_OUTCOME_ROUND.printMessage(namePlayer, playerCounter);
       MessageCli.PRINT_OUTCOME_ROUND.printMessage(AI_NAME, aiCounter);
       break;
