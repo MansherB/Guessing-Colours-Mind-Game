@@ -6,7 +6,7 @@ import nz.ac.auckland.se281.cli.Utils;
 import nz.ac.auckland.se281.model.Colour;
 
 public class Game {
-  public static String AI_NAME = "HAL-9000";
+  static final String AI_NAME = "HAL-9000";
   private int numRounds;
   private int roundCounter;
   private String namePlayer;
@@ -45,8 +45,9 @@ public class Game {
         MessageCli.PRINT_POWER_COLOUR.printMessage(Colour.getRandomColourForPowerColour());
       }
       roundCounter++;
-
       MessageCli.PRINT_INFO_MOVE.printMessage(namePlayer, colour1, colour2);
+      MessageCli.PRINT_INFO_MOVE.printMessage(
+          AI_NAME, Colour.getRandomColourForAi(), Colour.getRandomColourForAi());
       break;
     }
   }
