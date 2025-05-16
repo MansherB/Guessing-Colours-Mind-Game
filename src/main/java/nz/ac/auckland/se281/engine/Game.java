@@ -23,22 +23,26 @@ public class Game {
 
   public void play() {
     MessageCli.START_ROUND.printMessage(roundCounter, numRounds);
-    MessageCli.ASK_HUMAN_INPUT.printMessage();
 
-    // Getting input from user via scanner
-    String input = Utils.scanner.nextLine().toUpperCase();
+    while (true) {
+      MessageCli.ASK_HUMAN_INPUT.printMessage();
 
-    // Splitting parts by space
-    String[] parts = input.split("\\s+");
+      // Getting input from user via scanner
+      String input = Utils.scanner.nextLine().toUpperCase();
 
-    if (input == null || input.isEmpty() || parts.length != 2 || !isValidColour(parts)) {
-      MessageCli.INVALID_HUMAN_INPUT.printMessage();
-    } else {
+      // Splitting parts by space
+      String[] parts = input.split("\\s+");
+
+      if (input == null || input.isEmpty() || parts.length != 2 || !isValidColour(parts)) {
+        MessageCli.INVALID_HUMAN_INPUT.printMessage();
+        continue;
+      }
       // Extracts the full colour names from switch input
       Colour colour1 = Colour.fromInput(parts[0]);
       Colour colour2 = Colour.fromInput(parts[1]);
       roundCounter++;
       MessageCli.PRINT_INFO_MOVE.printMessage(namePlayer, colour1, colour2);
+      break;
     }
   }
 
