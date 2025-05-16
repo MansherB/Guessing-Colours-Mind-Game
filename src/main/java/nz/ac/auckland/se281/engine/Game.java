@@ -49,11 +49,15 @@ public class Game {
       int aiCounter = 0;
 
       if (roundCounter % 3 == 0) {
+        Colour powerColour = Colour.getRandomColourForPowerColour();
+        MessageCli.PRINT_POWER_COLOUR.printMessage(powerColour.name());
         if (colour2 == aiColours[0]) {
           playerCounter = playerCounter + 2;
-        } else if (aiColours[1] == colour1) {
+        }
+        if (aiColours[1] == colour1 && aiColours[1] == powerColour) {
           aiCounter = aiCounter + 2;
         }
+
         MessageCli.PRINT_POWER_COLOUR.printMessage(Colour.getRandomColourForPowerColour());
       }
       roundCounter++;
