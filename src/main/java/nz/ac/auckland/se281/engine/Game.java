@@ -6,6 +6,7 @@ import nz.ac.auckland.se281.cli.MessageCli;
 public class Game {
   public static String AI_NAME = "HAL-9000";
   private int numRounds;
+  private int roundCounter;
 
   public Game() {}
 
@@ -13,10 +14,10 @@ public class Game {
     String namePlayer = options[0];
     MessageCli.WELCOME_PLAYER.printMessage(namePlayer);
     this.numRounds = numRounds;
+    this.roundCounter = 1;
   }
 
   public void play() {
-    int roundCounter = 1;
     MessageCli.START_ROUND.printMessage(roundCounter, numRounds);
     roundCounter++;
   }
