@@ -14,6 +14,7 @@ public class Game {
   public Game() {}
 
   public void newGame(Difficulty difficulty, int numRounds, String[] options) {
+    // Initialising player name, rounds and counter
     String namePlayer = options[0];
     MessageCli.WELCOME_PLAYER.printMessage(namePlayer);
     this.numRounds = numRounds;
@@ -40,7 +41,11 @@ public class Game {
       // Extracts the full colour names from switch input
       Colour colour1 = Colour.fromInput(parts[0]);
       Colour colour2 = Colour.fromInput(parts[1]);
+      if (roundCounter % 3 == 0) {
+        MessageCli.PRINT_POWER_COLOUR.printMessage(Colour.getRandomColourForPowerColour());
+      }
       roundCounter++;
+
       MessageCli.PRINT_INFO_MOVE.printMessage(namePlayer, colour1, colour2);
       break;
     }
