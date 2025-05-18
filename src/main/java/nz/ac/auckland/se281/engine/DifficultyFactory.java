@@ -10,6 +10,8 @@ public class DifficultyFactory {
         return new RandomStrategy();
       case MEDIUM:
         return new RandomStrategy();
+      case HARD:
+        return new RandomStrategy();
       default:
         System.err.println("Wrong Difficulty");
         System.exit(0);
