@@ -21,7 +21,11 @@ public class Game {
     this.numRounds = numRounds;
     this.namePlayer = namePlayer;
     this.roundCounter = 1;
-    this.strategy = new RandomStrategy();
+    this.strategy = DifficultyFactory.createStrategy(difficulty);
+  }
+
+  public void setStrategy(Strategies strategy) {
+    this.strategy = strategy;
   }
 
   public void play() {
