@@ -53,7 +53,7 @@ public class Game {
       Colour colour2 = Colour.fromInput(parts[1]);
 
       // Set strategy to AvoidLastColour at round 2 if MEDIUM
-      if (roundCounter == 2 && difficulty == Difficulty.MEDIUM) {
+      if (roundCounter >= 2 && difficulty == Difficulty.MEDIUM) {
         AvoidLastColour avoidStrategy = new AvoidLastColour();
         avoidStrategy.setLastHumanColour(lastHumanColour);
         setStrategy(avoidStrategy);
