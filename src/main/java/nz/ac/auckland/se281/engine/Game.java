@@ -11,6 +11,8 @@ public class Game {
   private int roundCounter;
   private String namePlayer;
   private Strategies strategy;
+  private Difficulty difficulty;
+  private Colour lastHumanColour;
 
   public Game() {}
 
@@ -22,6 +24,8 @@ public class Game {
     this.namePlayer = namePlayer;
     this.roundCounter = 1;
     this.strategy = DifficultyFactory.createStrategy(difficulty);
+    this.difficulty = difficulty;
+    this.lastHumanColour = null;
   }
 
   public void setStrategy(Strategies strategy) {
@@ -47,6 +51,14 @@ public class Game {
       // Extracts the full colour names from switch input
       Colour colour1 = Colour.fromInput(parts[0]);
       Colour colour2 = Colour.fromInput(parts[1]);
+
+      // Set strategy to AvoidLastColour at round 2 if MEDIUM
+      if (roundCounter == 2 && difficulty == Difficulty.MEDIUM) {
+        AvoidLastColour avoidStrategy = new AvoidLastColour();
+        avoidStrategy.setLastHumanColour(lastHumanColour);
+        setStrategy(avoidStrategy);
+      }
+
       Colour[] aiColours = strategy.getAiStrategy();
 
       int playerCounter = 0;
@@ -61,10 +73,9 @@ public class Game {
         if (aiColours[1] == colour1 && aiColours[1] == powerColour) {
           aiCounter = aiCounter + 2;
         }
-
-        MessageCli.PRINT_POWER_COLOUR.printMessage(Colour.getRandomColourForPowerColour());
       }
       roundCounter++;
+
       MessageCli.PRINT_INFO_MOVE.printMessage(namePlayer, colour1, colour2);
 
       MessageCli.PRINT_INFO_MOVE.printMessage(AI_NAME, aiColours[0], aiColours[1]);
@@ -79,6 +90,8 @@ public class Game {
 
       MessageCli.PRINT_OUTCOME_ROUND.printMessage(namePlayer, playerCounter);
       MessageCli.PRINT_OUTCOME_ROUND.printMessage(AI_NAME, aiCounter);
+      this.lastHumanColour = colour1;
+
       break;
     }
   }

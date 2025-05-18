@@ -9,7 +9,7 @@ public class DifficultyFactory {
       case EASY:
         return new RandomStrategy();
       case MEDIUM:
-        return new AvoidLastColour();
+        return new RandomStrategy();
       default:
         System.err.println("Wrong Difficulty");
         System.exit(0);
