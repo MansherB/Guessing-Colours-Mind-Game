@@ -1,6 +1,5 @@
 package nz.ac.auckland.se281.engine;
 
-
 import nz.ac.auckland.se281.Main.Difficulty;
 import nz.ac.auckland.se281.cli.MessageCli;
 import nz.ac.auckland.se281.cli.Utils;
@@ -147,6 +146,7 @@ public class Game implements GameResult {
       lastHumanColour = colour1;
       lastAiScore = aiCounter;
       roundCounter++;
+
       break;
     }
   }
@@ -189,12 +189,17 @@ public class Game implements GameResult {
     if (aiScore > 0) {
       aiRounds++;
     }
-    MessageCli.PRINT_PLAYER_POINTS.printMessage(playerName, humanRounds);
-    MessageCli.PRINT_PLAYER_POINTS.printMessage(AI_NAME, aiRounds);
-    MessageCli.PRINT_END_GAME.printMessage(AI_NAME, aiRounds);
 
-    if (humanRounds == aiRounds) {
-      MessageCli.PRINT_TIE_GAME.printMessage(AI_NAME, aiRounds);
+    if (roundCounter >= numRounds) {
+      MessageCli.PRINT_PLAYER_POINTS.printMessage(playerName, humanRounds);
+      MessageCli.PRINT_PLAYER_POINTS.printMessage(AI_NAME, aiRounds);
+      MessageCli.PRINT_END_GAME.printMessage();
+      if (humanFinalScore == aiFinalScore) {
+        MessageCli.PRINT_TIE_GAME.printMessage(playerName, humanFinalScore);
+      }
+      if (humanFinalScore > aiFinalScore) {
+        MessageCli.PRINT_WINNER_GAME.printMessage(playerName);
+      }
     }
   }
 }
