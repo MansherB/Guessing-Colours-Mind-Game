@@ -4,6 +4,8 @@ import nz.ac.auckland.se281.Main.Difficulty;
 
 public class DifficultyFactory {
 
+  // Factory strategy to switch between different difficulties
+  // All difficulties begin with Random, then switch to AvoidLastStrategy or LeastusedColourStrategy
   public static Strategies createStrategy(Difficulty difficulty) {
     switch (difficulty) {
       case EASY:

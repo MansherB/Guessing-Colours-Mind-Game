@@ -9,7 +9,7 @@ public class Game {
   static final String AI_NAME = "HAL-9000";
   private int numRounds;
   private int roundCounter;
-  private String namePlayer;
+  private String playerName;
   private Strategies strategy;
   private Difficulty difficulty;
   private Colour lastHumanColour;
@@ -19,16 +19,15 @@ public class Game {
   public Game() {}
 
   public void newGame(Difficulty difficulty, int numRounds, String[] options) {
-    String namePlayer = options[0];
-    MessageCli.WELCOME_PLAYER.printMessage(namePlayer);
+    String playerName = options[0];
+    MessageCli.WELCOME_PLAYER.printMessage(playerName);
     this.numRounds = numRounds;
-    this.namePlayer = namePlayer;
+    this.playerName = playerName;
     this.roundCounter = 1;
     this.strategy = DifficultyFactory.createStrategy(difficulty);
     this.difficulty = difficulty;
     this.lastHumanColour = null;
     this.lastAiScore = 0;
-
     if (difficulty == Difficulty.HARD) {
       this.leastUsedStrategy = new LeastUsedColour();
     }
@@ -39,6 +38,10 @@ public class Game {
   }
 
   public void play() {
+    if (playerName == null) {
+      MessageCli.GAME_NOT_STARTED.printMessage();
+      return;
+    }
     MessageCli.START_ROUND.printMessage(String.valueOf(roundCounter), String.valueOf(numRounds));
 
     while (true) {
@@ -124,10 +127,10 @@ public class Game {
         }
       }
 
-      MessageCli.PRINT_INFO_MOVE.printMessage(namePlayer, colour1.name(), colour2.name());
+      MessageCli.PRINT_INFO_MOVE.printMessage(playerName, colour1.name(), colour2.name());
       MessageCli.PRINT_INFO_MOVE.printMessage(AI_NAME, aiColours[0].name(), aiColours[1].name());
 
-      MessageCli.PRINT_OUTCOME_ROUND.printMessage(namePlayer, String.valueOf(playerCounter));
+      MessageCli.PRINT_OUTCOME_ROUND.printMessage(playerName, String.valueOf(playerCounter));
       MessageCli.PRINT_OUTCOME_ROUND.printMessage(AI_NAME, String.valueOf(aiCounter));
 
       lastHumanColour = colour1;
@@ -137,6 +140,7 @@ public class Game {
     }
   }
 
+  // Helper method to validate colours (R, G, B, Y)
   private boolean isValidColour(String[] parts) {
     for (String part : parts) {
       Colour colour = Colour.fromInput(part);
@@ -147,11 +151,18 @@ public class Game {
     return true;
   }
 
+  // Helper method to switch to avoid last colour strategy
   private void switchToAvoidStrategy() {
     AvoidLastColour avoidStrategy = new AvoidLastColour();
     avoidStrategy.setLastHumanColour(lastHumanColour);
     setStrategy(avoidStrategy);
   }
 
-  public void showStats() {}
+  public void showStats() {
+    // If game is not started, printing error message
+    if (playerName == null) {
+      MessageCli.GAME_NOT_STARTED.printMessage();
+      return;
+    }
+  }
 }
