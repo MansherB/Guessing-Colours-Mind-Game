@@ -56,10 +56,8 @@ public class Game {
       Colour colour2 = Colour.fromInput(parts[1]);
 
       // Set strategy
-      if (roundCounter >= 2 && difficulty == Difficulty.MEDIUM) {
-        AvoidLastColour avoidStrategy = new AvoidLastColour();
-        avoidStrategy.setLastHumanColour(lastHumanColour);
-        setStrategy(avoidStrategy);
+      if (difficulty == Difficulty.MEDIUM && roundCounter >= 2) {
+        switchToAvoidStrategy();
       } else if (difficulty == Difficulty.HARD) {
         if (roundCounter == 1 || roundCounter == 2) {
           setStrategy(new RandomStrategy());
@@ -67,11 +65,19 @@ public class Game {
           setStrategy(leastUsedStrategy);
         } else if (roundCounter > 3) {
           if (lastAiScore > 0) {
-            setStrategy(leastUsedStrategy);
+            // Keeping previous strategy
+            if (strategy instanceof LeastUsedColour) {
+              setStrategy(leastUsedStrategy);
+            } else {
+              switchToAvoidStrategy();
+            }
           } else {
-            AvoidLastColour avoidStrategy = new AvoidLastColour();
-            avoidStrategy.setLastHumanColour(lastHumanColour);
-            setStrategy(avoidStrategy);
+            // Switching to opposite strategy
+            if (strategy instanceof LeastUsedColour) {
+              switchToAvoidStrategy();
+            } else {
+              setStrategy(leastUsedStrategy);
+            }
           }
         }
       }
@@ -139,6 +145,12 @@ public class Game {
       }
     }
     return true;
+  }
+
+  private void switchToAvoidStrategy() {
+    AvoidLastColour avoidStrategy = new AvoidLastColour();
+    avoidStrategy.setLastHumanColour(lastHumanColour);
+    setStrategy(avoidStrategy);
   }
 
   public void showStats() {}
