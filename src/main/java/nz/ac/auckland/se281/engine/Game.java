@@ -5,6 +5,7 @@ import nz.ac.auckland.se281.cli.MessageCli;
 import nz.ac.auckland.se281.cli.Utils;
 import nz.ac.auckland.se281.model.Colour;
 
+// latest
 public class Game implements GameResult {
   static final String AI_NAME = "HAL-9000";
   private int numRounds;
@@ -20,13 +21,6 @@ public class Game implements GameResult {
   private int humanRounds;
   private int aiRounds;
 
-  public Game() {
-    this.humanFinalScore = 0;
-    this.aiFinalScore = 0;
-    this.humanRounds = 0;
-    this.aiRounds = 0;
-  }
-
   public void newGame(Difficulty difficulty, int numRounds, String[] options) {
     String playerName = options[0];
     MessageCli.WELCOME_PLAYER.printMessage(playerName);
@@ -37,6 +31,10 @@ public class Game implements GameResult {
     this.difficulty = difficulty;
     this.lastHumanColour = null;
     this.lastAiScore = 0;
+    this.humanFinalScore = 0;
+    this.aiFinalScore = 0;
+    this.humanRounds = 0;
+    this.aiRounds = 0;
     if (difficulty == Difficulty.HARD) {
       this.leastUsedStrategy = new LeastUsedColour();
     }
@@ -199,6 +197,8 @@ public class Game implements GameResult {
       }
       if (humanFinalScore > aiFinalScore) {
         MessageCli.PRINT_WINNER_GAME.printMessage(playerName);
+      } else {
+        MessageCli.PRINT_WINNER_GAME.printMessage(AI_NAME);
       }
     }
   }
