@@ -5,7 +5,7 @@ import nz.ac.auckland.se281.cli.MessageCli;
 import nz.ac.auckland.se281.cli.Utils;
 import nz.ac.auckland.se281.model.Colour;
 
-public class Game {
+public class Game implements GameResult {
   static final String AI_NAME = "HAL-9000";
   private int numRounds;
   private int roundCounter;
@@ -15,8 +15,17 @@ public class Game {
   private Colour lastHumanColour;
   private LeastUsedColour leastUsedStrategy;
   private int lastAiScore;
+  private int humanFinalScore;
+  private int aiFinalScore;
+  private int humanRounds;
+  private int aiRounds;
 
-  public Game() {}
+  public Game() {
+    this.humanFinalScore = 0;
+    this.aiFinalScore = 0;
+    this.humanRounds = 0;
+    this.aiRounds = 0;
+  }
 
   public void newGame(Difficulty difficulty, int numRounds, String[] options) {
     String playerName = options[0];
@@ -132,6 +141,7 @@ public class Game {
 
       MessageCli.PRINT_OUTCOME_ROUND.printMessage(playerName, String.valueOf(playerCounter));
       MessageCli.PRINT_OUTCOME_ROUND.printMessage(AI_NAME, String.valueOf(aiCounter));
+      updateScores(playerCounter, aiCounter);
 
       lastHumanColour = colour1;
       lastAiScore = aiCounter;
@@ -164,5 +174,21 @@ public class Game {
       MessageCli.GAME_NOT_STARTED.printMessage();
       return;
     }
+    MessageCli.PRINT_PLAYER_POINTS.printMessage(playerName, humanFinalScore);
+    MessageCli.PRINT_PLAYER_POINTS.printMessage(AI_NAME, aiFinalScore);
+  }
+
+  @Override
+  public void updateScores(int humanScore, int aiScore) {
+    humanFinalScore += humanScore;
+    aiFinalScore += aiScore;
+    if (humanScore > 0) {
+      humanRounds++;
+    }
+    if (aiScore > 0) {
+      aiRounds++;
+    }
+    MessageCli.PRINT_PLAYER_POINTS.printMessage(playerName, humanRounds);
+    MessageCli.PRINT_PLAYER_POINTS.printMessage(AI_NAME, aiRounds);
   }
 }
