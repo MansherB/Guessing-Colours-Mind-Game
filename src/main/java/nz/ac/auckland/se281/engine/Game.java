@@ -21,11 +21,13 @@ public class Game implements GameResult {
   private boolean gameEnd;
 
   public void newGame(Difficulty difficulty, int numRounds, String[] options) {
+    // Getting the player name from options array to validate if game started or not
     String playerName = options[0];
     MessageCli.WELCOME_PLAYER.printMessage(playerName);
+    // Initialising variables to 0 or false
     this.numRounds = numRounds;
     this.playerName = playerName;
-    this.roundCounter = 1;
+    this.roundCounter = 0;
     this.strategy = DifficultyFactory.createStrategy(difficulty);
     this.difficulty = difficulty;
     this.lastHumanColour = null;
@@ -165,6 +167,7 @@ public class Game implements GameResult {
     setStrategy(avoidStrategy);
   }
 
+  @Override
   public void showStats() {
     // If game is not started, printing error message
     if (playerName == null || gameEnd) {
