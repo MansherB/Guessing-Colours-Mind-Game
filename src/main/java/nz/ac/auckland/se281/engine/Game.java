@@ -18,6 +18,7 @@ public class Game implements GameResult {
   private int lastAiScore;
   private int humanFinalScore;
   private int aiFinalScore;
+  private boolean gameEnd;
 
   public void newGame(Difficulty difficulty, int numRounds, String[] options) {
     String playerName = options[0];
@@ -31,6 +32,7 @@ public class Game implements GameResult {
     this.lastAiScore = 0;
     this.humanFinalScore = 0;
     this.aiFinalScore = 0;
+    this.gameEnd = false;
     if (difficulty == Difficulty.HARD) {
       this.leastUsedStrategy = new LeastUsedColour();
     }
@@ -41,7 +43,7 @@ public class Game implements GameResult {
   }
 
   public void play() {
-    if (playerName == null) {
+    if (playerName == null || gameEnd) {
       MessageCli.GAME_NOT_STARTED.printMessage();
       return;
     }
@@ -178,18 +180,25 @@ public class Game implements GameResult {
     humanFinalScore += humanScore;
     aiFinalScore += aiScore;
 
+    // If round is greater than the total rounds, game has ended so print points
     if (roundCounter >= numRounds) {
       MessageCli.PRINT_PLAYER_POINTS.printMessage(playerName, humanFinalScore);
       MessageCli.PRINT_PLAYER_POINTS.printMessage(AI_NAME, aiFinalScore);
       MessageCli.PRINT_END_GAME.printMessage();
+
+      // If scores are equal, print tie message
       if (humanFinalScore == aiFinalScore) {
         MessageCli.PRINT_TIE_GAME.printMessage(playerName, humanFinalScore);
       }
+
+      // If human has more score, print human as the winner
       if (humanFinalScore > aiFinalScore) {
         MessageCli.PRINT_WINNER_GAME.printMessage(playerName);
       } else {
+        // Else printing AI as the winner
         MessageCli.PRINT_WINNER_GAME.printMessage(AI_NAME);
       }
+      gameEnd = true;
     }
   }
 }

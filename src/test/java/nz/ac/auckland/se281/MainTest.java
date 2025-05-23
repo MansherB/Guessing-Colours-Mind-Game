@@ -1109,5 +1109,28 @@ public class MainTest {
       assertContains(PRINT_PLAYER_POINTS.getMessage("Anatol", "613"));
       assertContains(PRINT_PLAYER_POINTS.getMessage(AI_NAME, "605"));
     }
+
+    @Test
+    public void TX_17_game_ended_play_and_show_stats() throws Exception {
+      // Tests what happens if you run show-stats or play after game ends
+      runCommands(
+          NEW_GAME + " HARD 3",
+          "Anatol",
+          PLAY,
+          "r r",
+          PLAY,
+          "r b",
+          PLAY,
+          "y r",
+          SHOW_STATS,
+          PLAY,
+          "g g");
+
+      assertContains(PRINT_END_GAME.getMessage());
+      assertContains(GAME_NOT_STARTED.getMessage());
+
+      assertDoesNotContain(START_ROUND.getMessage("4", "3"));
+      assertDoesNotContain(PRINT_INFO_MOVE.getMessage("Anatol", "GREEN", "GREEN"));
+    }
   }
 }
