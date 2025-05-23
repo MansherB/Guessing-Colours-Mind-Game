@@ -53,7 +53,7 @@ public class Game implements GameResult {
       MessageCli.ASK_HUMAN_INPUT.printMessage();
 
       String input = Utils.scanner.nextLine().toUpperCase();
-      String[] parts = input.split("\\s+");
+      String[] parts = input.trim().split("\\s+");
 
       if (input == null || input.trim().isEmpty() || parts.length != 2 || !isValidColour(parts)) {
         MessageCli.INVALID_HUMAN_INPUT.printMessage();
@@ -167,7 +167,7 @@ public class Game implements GameResult {
 
   public void showStats() {
     // If game is not started, printing error message
-    if (playerName == null) {
+    if (playerName == null || gameEnd) {
       MessageCli.GAME_NOT_STARTED.printMessage();
       return;
     }

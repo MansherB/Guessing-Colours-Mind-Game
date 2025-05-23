@@ -1132,5 +1132,33 @@ public class MainTest {
       assertDoesNotContain(START_ROUND.getMessage("4", "3"));
       assertDoesNotContain(PRINT_INFO_MOVE.getMessage("Anatol", "GREEN", "GREEN"));
     }
+
+    @Test
+    public void TX_4_input_colour_whitespace_before() throws Exception {
+      // check whitespace trimmed before input
+      runCommands(
+          NEW_GAME + " EASY 2",
+          "Valerio", //
+          PLAY,
+          "    B Y");
+      assertContains(PRINT_OUTCOME_ROUND.getMessage("Valerio", 0));
+      assertDoesNotContain(INVALID_HUMAN_INPUT.getMessage());
+    }
+
+    @Test
+    public void TX_7_stats_cleared_endgame() throws Exception {
+      // showstats should not work at end of game
+      Utils.randomAi = new Random(3434343);
+      Utils.randomPowerNumber = new Random(1);
+      runCommands(
+          NEW_GAME + " EASY 2",
+          "Valerio", //
+          PLAY,
+          "B Y",
+          PLAY,
+          "R B",
+          SHOW_STATS);
+      assertContains(GAME_NOT_STARTED.getMessage());
+    }
   }
 }
