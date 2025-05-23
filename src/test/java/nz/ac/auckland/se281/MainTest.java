@@ -3,8 +3,11 @@ package nz.ac.auckland.se281;
 import static nz.ac.auckland.se281.Main.Command.*;
 import static nz.ac.auckland.se281.cli.MessageCli.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import nz.ac.auckland.se281.cli.Utils;
+import nz.ac.auckland.se281.model.Colour;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -1081,6 +1084,30 @@ public class MainTest {
     }
 
     @Test
-    public void yourtest() throws Exception {}
+    public void TX_04_play_many_rounds() throws Exception {
+      final int NUM_ROUNDS = 2000;
+
+      Utils.randomAi.setSeed(56);
+      Utils.randomPowerNumber.setSeed(3);
+
+      List<Object> commands = new ArrayList<>();
+      commands.add(NEW_GAME + " HARD " + NUM_ROUNDS);
+      commands.add("Anatol");
+
+      Random random = new Random(12345);
+
+      for (int i = 0; i < NUM_ROUNDS; i++) {
+        Colour a = Colour.values()[random.nextInt(4)];
+        Colour b = Colour.values()[random.nextInt(4)];
+
+        commands.add(PLAY);
+        commands.add(a.name() + " " + b.name());
+      }
+
+      runCommands(commands.toArray());
+
+      assertContains(PRINT_PLAYER_POINTS.getMessage("Anatol", "613"));
+      assertContains(PRINT_PLAYER_POINTS.getMessage(AI_NAME, "605"));
+    }
   }
 }

@@ -18,8 +18,6 @@ public class Game implements GameResult {
   private int lastAiScore;
   private int humanFinalScore;
   private int aiFinalScore;
-  private int humanRounds;
-  private int aiRounds;
 
   public void newGame(Difficulty difficulty, int numRounds, String[] options) {
     String playerName = options[0];
@@ -33,8 +31,6 @@ public class Game implements GameResult {
     this.lastAiScore = 0;
     this.humanFinalScore = 0;
     this.aiFinalScore = 0;
-    this.humanRounds = 0;
-    this.aiRounds = 0;
     if (difficulty == Difficulty.HARD) {
       this.leastUsedStrategy = new LeastUsedColour();
     }
@@ -57,7 +53,7 @@ public class Game implements GameResult {
       String input = Utils.scanner.nextLine().toUpperCase();
       String[] parts = input.split("\\s+");
 
-      if (input == null || input.isEmpty() || parts.length != 2 || !isValidColour(parts)) {
+      if (input == null || input.trim().isEmpty() || parts.length != 2 || !isValidColour(parts)) {
         MessageCli.INVALID_HUMAN_INPUT.printMessage();
         continue;
       }
@@ -181,16 +177,10 @@ public class Game implements GameResult {
   public void updateScores(int humanScore, int aiScore) {
     humanFinalScore += humanScore;
     aiFinalScore += aiScore;
-    if (humanScore > 0) {
-      humanRounds++;
-    }
-    if (aiScore > 0) {
-      aiRounds++;
-    }
 
     if (roundCounter >= numRounds) {
-      MessageCli.PRINT_PLAYER_POINTS.printMessage(playerName, humanRounds);
-      MessageCli.PRINT_PLAYER_POINTS.printMessage(AI_NAME, aiRounds);
+      MessageCli.PRINT_PLAYER_POINTS.printMessage(playerName, humanFinalScore);
+      MessageCli.PRINT_PLAYER_POINTS.printMessage(AI_NAME, aiFinalScore);
       MessageCli.PRINT_END_GAME.printMessage();
       if (humanFinalScore == aiFinalScore) {
         MessageCli.PRINT_TIE_GAME.printMessage(playerName, humanFinalScore);
